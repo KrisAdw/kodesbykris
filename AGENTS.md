@@ -7,3 +7,32 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+# Design & Styling
+
+Before writing any UI, styling, or visual code, read [`DESIGN.md`](./DESIGN.md).
+It is the entry point for the project's design system and always references the
+authoritative brand guidelines in [`docs/`](./docs). Follow those guidelines for
+all styling decisions — colors, typography, spacing, layout, and brand voice.
+
+When the brand guidelines change, keep `DESIGN.md` in sync and update the
+reference index there.
+
+# Tailwind CSS Canonical Classes
+
+Every Tailwind class name must use its **canonical form**. Never write an
+arbitrary value when a standard class exists:
+
+- Use `bg-white/8` instead of `bg-white/[.08]`
+- Use `w-25` instead of `w-[100px]`
+- Use `h-3.5` instead of `h-[14px]`
+- Use `md:w-39.5` instead of `md:w-[158px]`
+
+Only keep an arbitrary value when no canonical class exists (e.g.
+`dark:border-white/[.145]`, `text-[0.9em]`).
+
+This matches the Tailwind IntelliSense `suggestCanonicalClasses` lint and is
+enforced by the `tailwind-canonical-classes/tailwind-canonical-classes` ESLint
+rule (see `eslint.config.mjs`). Before finishing any change that touches UI
+code, run `bun run lint` and fix all warnings — `bun run lint -- --fix`
+auto-fixes most of them.
