@@ -84,34 +84,33 @@ export function Header({ t, locale }: HeaderProps) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          {/* Desktop only — mobile puts the switcher inside the hamburger menu */}
-          <div className="hidden md:block">
-            <LanguageSwitcher t={t} locale={locale} />
-          </div>
+        {/* Desktop only — the CTA + switcher are never rendered on mobile;
+            on mobile they live inside the hamburger menu below. */}
+        <div className="hidden items-center gap-3 md:flex">
+          <LanguageSwitcher t={t} locale={locale} />
           <Button
             href={startHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-flex"
           >
             {t.header.startProject}
           </Button>
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            aria-label={open ? t.header.closeMenu : t.header.openMenu}
-            className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-foreground md:hidden"
-          >
-            {open ? (
-              <X className="h-5 w-5" aria-hidden />
-            ) : (
-              <Menu className="h-5 w-5" aria-hidden />
-            )}
-          </button>
         </div>
+        {/* Mobile only — everything else lives in the hamburger menu. */}
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? t.header.closeMenu : t.header.openMenu}
+          className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-foreground md:hidden"
+        >
+          {open ? (
+            <X className="h-5 w-5" aria-hidden />
+          ) : (
+            <Menu className="h-5 w-5" aria-hidden />
+          )}
+        </button>
       </div>
 
       {open ? (
