@@ -43,6 +43,8 @@ export async function Footer() {
                 <li key={item.href}>
                   <a
                     href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
                     className="text-sm text-neutral-500 transition-colors hover:text-foreground"
                   >
                     {item.label}

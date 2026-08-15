@@ -30,6 +30,7 @@ export const id: Messages = {
       { label: "Cara Kerja", href: "#process" },
       { label: "Tentang", href: "#why" },
       { label: "FAQ", href: "#faq" },
+      { label: "CV", href: "https://krisadiwinata.online" },
     ],
     startProject: "Gas Bikin Proyek",
     logoAlt: "logo kodesbykris",

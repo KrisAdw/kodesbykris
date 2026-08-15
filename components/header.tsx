@@ -77,6 +77,8 @@ export function Header({ t, locale }: HeaderProps) {
             <a
               key={item.href}
               href={item.href}
+              target={item.href.startsWith("http") ? "_blank" : undefined}
+              rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
               className="text-sm font-medium text-neutral-500 transition-colors hover:text-foreground"
             >
               {item.label}
@@ -124,6 +126,8 @@ export function Header({ t, locale }: HeaderProps) {
               <li key={item.href}>
                 <a
                   href={item.href}
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="font-display text-2xl font-medium text-foreground"
                 >
                   {item.label}

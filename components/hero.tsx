@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowDown, Mail, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import gsap from "gsap";
@@ -28,13 +28,23 @@ function orbitPoint(radius: number, angleDeg: number) {
   };
 }
 
-const RING_1_RADIUS = 300;
-const RING_2_RADIUS = 430;
-
 export function Hero({ t }: { t: Messages }) {
   const quotes = t.hero.quotes;
   const ring1Ref = useRef<HTMLDivElement>(null);
   const ring2Ref = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  // Smaller orbits on mobile so particles stay on-screen.
+  const RING_1_RADIUS = isMobile ? 180 : 300;
+  const RING_2_RADIUS = isMobile ? 250 : 430;
 
   const ring1 = useMemo<OrbitParticle[]>(
     () =>
@@ -43,7 +53,7 @@ export function Hero({ t }: { t: Messages }) {
         text,
         accent: i === 0,
       })),
-    [quotes]
+    [quotes, RING_1_RADIUS]
   );
 
   const ring2 = useMemo<OrbitParticle[]>(
@@ -52,7 +62,7 @@ export function Hero({ t }: { t: Messages }) {
         ...orbitPoint(RING_2_RADIUS, i * 72 + 36),
         text,
       })),
-    [quotes]
+    [quotes, RING_2_RADIUS]
   );
 
   useGSAP(() => {
@@ -110,10 +120,7 @@ export function Hero({ t }: { t: Messages }) {
       <div className="bg-grid absolute inset-0 opacity-70" aria-hidden />
 
       {/* Orbiting quote particles — the problems kodesbykris solves */}
-      <div
-        className="pointer-events-none absolute inset-0 hidden lg:block"
-        aria-hidden
-      >
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
         <div ref={ring1Ref} className="absolute top-1/2 left-1/2">
           {ring1.map((p, i) => (
             <div

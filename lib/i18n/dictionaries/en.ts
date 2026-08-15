@@ -43,6 +43,7 @@ export const en = {
       { label: "Process", href: "#process" },
       { label: "About", href: "#why" },
       { label: "FAQ", href: "#faq" },
+      { label: "CV", href: "https://krisadiwinata.online" },
     ],
     startProject: "Start a Project",
     logoAlt: "kodesbykris logo",
