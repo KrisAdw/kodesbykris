@@ -53,7 +53,7 @@ export const en = {
   },
 
   hero: {
-    availability: "Available for new projects",
+    label: "INDEPENDENT WEB STUDIO",
     title: {
       pre: "I build software that solves ",
       highlight: "real",
@@ -405,7 +405,7 @@ export const en = {
     whatsappOpen: "Open WhatsApp chat",
     whatsappClose: "Close chat",
     whatsappOnline: "Online",
-    whatsappBubble: "Hi there! 👋 Got a project in mind? Let's talk about it.",
+    whatsappBubble: "Hi there! Got a project in mind? Let's talk about it.",
     whatsappCta: "Start chat on WhatsApp",
   },
 };

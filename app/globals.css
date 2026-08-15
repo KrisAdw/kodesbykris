@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: the `dark:` variants and the semantic color tokens
+   respond to the `.dark` class on <html> (managed by ThemeProvider) instead
+   of the OS `prefers-color-scheme` media query. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ─────────────────────────────────────────────────────────────
    kodesbykris design tokens
    Source of truth: docs/kodesbykris-brand-guidelines-v1.md
@@ -7,19 +12,40 @@
    ───────────────────────────────────────────────────────────── */
 
 :root {
+  color-scheme: light;
   --background: #f7f7f5; /* canvas */
   --foreground: #111111; /* ink */
   --surface: #ffffff;
   --line: rgba(17, 17, 17, 0.12);
 }
 
+/* No-JS fallback: keep following the OS if the theme script never runs. */
 @media (prefers-color-scheme: dark) {
   :root {
+    color-scheme: dark;
     --background: #111111; /* ink */
     --foreground: #f7f7f5; /* canvas */
     --surface: #1a1a18;
     --line: rgba(247, 247, 245, 0.14);
   }
+}
+
+/* Explicit user choice — declared after the media query so the class wins
+   even when it contradicts the OS preference. */
+.light {
+  color-scheme: light;
+  --background: #f7f7f5; /* canvas */
+  --foreground: #111111; /* ink */
+  --surface: #ffffff;
+  --line: rgba(17, 17, 17, 0.12);
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #111111; /* ink */
+  --foreground: #f7f7f5; /* canvas */
+  --surface: #1a1a18;
+  --line: rgba(247, 247, 245, 0.14);
 }
 
 @theme inline {

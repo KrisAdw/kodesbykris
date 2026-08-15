@@ -8,6 +8,7 @@ import { SITE, waLink } from "@/lib/site";
 import { locales, localeLabels, type Locale } from "@/lib/i18n/config";
 import type { Messages } from "@/lib/i18n/get-dictionary";
 import { Button } from "./button";
+import { ThemeToggle } from "./theme-toggle";
 
 type HeaderProps = {
   t: Messages;
@@ -86,9 +87,10 @@ export function Header({ t, locale }: HeaderProps) {
           ))}
         </nav>
 
-        {/* Desktop only — the CTA + switcher are never rendered on mobile;
-            on mobile they live inside the hamburger menu below. */}
+        {/* Desktop only — the theme toggle, language switcher, and CTA never
+            render on mobile; on mobile they live in the top bar / menu. */}
         <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           <LanguageSwitcher t={t} locale={locale} />
           <Button
             href={startHref}
@@ -98,21 +100,25 @@ export function Header({ t, locale }: HeaderProps) {
             {t.header.startProject}
           </Button>
         </div>
-        {/* Mobile only — everything else lives in the hamburger menu. */}
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? t.header.closeMenu : t.header.openMenu}
-          className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-foreground md:hidden"
-        >
-          {open ? (
-            <X className="h-5 w-5" aria-hidden />
-          ) : (
-            <Menu className="h-5 w-5" aria-hidden />
-          )}
-        </button>
+        {/* Mobile only — theme toggle next to the hamburger; the rest of the
+            navigation lives inside the hamburger menu. */}
+        <div className="flex items-center gap-2 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? t.header.closeMenu : t.header.openMenu}
+            className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-foreground"
+          >
+            {open ? (
+              <X className="h-5 w-5" aria-hidden />
+            ) : (
+              <Menu className="h-5 w-5" aria-hidden />
+            )}
+          </button>
+        </div>
       </div>
 
       {open ? (

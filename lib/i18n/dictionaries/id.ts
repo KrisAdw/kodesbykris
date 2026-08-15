@@ -40,11 +40,11 @@ export const id: Messages = {
   },
 
   hero: {
-    availability: "Ready buat proyek baru",
+    label: "INDEPENDENT WEB STUDIO",
     title: {
-      pre: "Gua ngebangun software yang bereskan ",
-      highlight: "masalah nyata",
-      post: " di bisnis lu.",
+      pre: "Gua bikin software yang beresin masalah bisnis ",
+      highlight: "nyata",
+      post: ".",
     },
     subtitle:
       "Website, web app, dashboard, sampai custom tools — dibikin langsung sama Kris buat lu yang butuh hasil nyata yang beneran jalan. Diskusi langsung, zero ribet ala agensi.",
@@ -391,7 +391,7 @@ export const id: Messages = {
     whatsappOpen: "Buka chat WhatsApp",
     whatsappClose: "Tutup chat",
     whatsappOnline: "Online",
-    whatsappBubble: "Halo! 👋 Punya proyek di pikiran? Yuk kita bahas.",
+    whatsappBubble: "Halo! Punya proyek di pikiran? Yuk kita bahas.",
     whatsappCta: "Mulai chat di WhatsApp",
   },
 };

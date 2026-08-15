@@ -174,22 +174,18 @@ export function Hero({ t }: { t: Messages }) {
       </div>
 
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-6 pt-28 pb-16 md:px-8">
-        <div className="lg:flex lg:items-stretch lg:justify-between lg:gap-10">
+        <div className="lg:relative lg:flex lg:items-stretch lg:justify-between lg:gap-10">
           <div className="max-w-3xl shrink-0">
             <p
               data-hero
-              className="inline-flex items-center gap-2.5 rounded-md border border-line bg-surface/70 px-3.5 py-1.5 font-mono text-xs tracking-wider text-neutral-500 uppercase"
+              className="font-mono text-xs tracking-[0.25em] text-neutral-500 uppercase"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-lime" />
-              </span>
-              {t.hero.availability}
+              {t.hero.label}
             </p>
 
             <h1
               data-hero
-              className="mt-8 font-display text-5xl leading-[1.04] font-medium tracking-tight text-balance md:text-7xl"
+              className="mt-4 font-display text-5xl leading-[1.04] font-medium tracking-tight text-balance md:text-7xl"
             >
               {t.hero.title.pre}
               <span className="text-lime">{t.hero.title.highlight}</span>
@@ -246,10 +242,13 @@ export function Hero({ t }: { t: Messages }) {
             </div>
           </div>
 
-          {/* Mascot — desktop: right column, height matches headline–CTA block */}
+          {/* Mascot — desktop: absolutely positioned so it fills the
+              headline–CTA block's height. Keeping it in flow made the row
+              (and the gap above the meta bar) as tall as the mascot's
+              intrinsic size whenever the mascot was taller than the text. */}
           <div
             data-hero
-            className="hidden shrink-0 -translate-x-1/2 items-end justify-end self-stretch lg:flex xl:-translate-x-44"
+            className="hidden items-end justify-end lg:absolute lg:inset-y-0 lg:right-0 lg:translate-x-[30%] lg:flex"
             aria-hidden
           >
             <Image
@@ -265,7 +264,7 @@ export function Hero({ t }: { t: Messages }) {
 
         <dl
           data-hero
-          className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-line pt-6 font-mono text-xs tracking-wider text-neutral-500 uppercase"
+          className="mt-6 flex flex-wrap gap-x-8 gap-y-3 border-t border-line pt-5 font-mono text-xs tracking-wider text-neutral-500 uppercase"
         >
           {t.hero.meta.map((item) => (
             <div key={item}>

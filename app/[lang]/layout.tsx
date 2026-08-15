@@ -7,6 +7,7 @@ import { dictionaries, getDictionary } from "@/lib/i18n/get-dictionary";
 import { ScrollTop } from "@/components/scroll-top";
 import { WhatsAppChat } from "@/components/whatsapp-chat";
 import { SplashScreen } from "@/components/splash-screen";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export async function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
@@ -75,6 +76,7 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
+      suppressHydrationWarning
       className={`${fontDisplay.variable} ${fontSans.variable} ${fontMono.variable} antialiased`}
     >
       <body className="bg-background text-foreground flex min-h-full flex-col font-sans">
@@ -84,7 +86,7 @@ export default async function RootLayout({
         >
           Skip to content
         </a>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         <SplashScreen />
         <ScrollTop t={t} />
         <WhatsAppChat t={t} />
