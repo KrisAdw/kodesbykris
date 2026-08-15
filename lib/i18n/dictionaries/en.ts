@@ -5,22 +5,18 @@
  */
 
 export type Project = {
-  /** Short project name, e.g. "JEPANGKU" */
   name: string;
-  /** Category, e.g. "LEARNING PLATFORM" */
   type: string;
-  /** Tech stack, e.g. "REACT · GO · POSTGRESQL" */
   stack: string;
   status: "completed" | "inProgress";
-  /** Year delivered, e.g. "2024" */
   year: string;
-  /** The business problem — keep it jargon-free */
   problem: string;
-  /** The measurable outcome */
   outcome: string;
-  /** Kris's role, e.g. "FULL-STACK DEVELOPMENT" */
   role: string;
-  /** Mark true until real content is added */
+  tagline: string;
+  description: string[];
+  href?: string;
+  screenImage: string;
   isPlaceholder?: boolean;
 };
 
@@ -45,7 +41,7 @@ export const en = {
       { label: "Services", href: "#services" },
       { label: "Work", href: "#work" },
       { label: "Process", href: "#process" },
-      { label: "About", href: "#about" },
+      { label: "About", href: "#why" },
       { label: "FAQ", href: "#faq" },
     ],
     startProject: "Start a Project",
@@ -76,6 +72,13 @@ export const en = {
       "MVPS",
       "INTEGRATIONS",
       "AUTOMATION",
+    ],
+    quotes: [
+      "Need a website, not sure where to start",
+      "Everything is still manual — exhausting",
+      "Our site is slow and outdated",
+      "I need a dashboard for my data",
+      "Got an idea but can't build it",
     ],
   },
 
@@ -113,43 +116,6 @@ export const en = {
     ],
   },
 
-  canBuild: {
-    tag: "What I can build",
-    title: 'Plain-English answers to "what can you do for me?"',
-    lead: "No jargon. If your problem is on this list, it's something I've built before — or can build for you.",
-    items: [
-      {
-        title: "Business websites & company profiles",
-        description:
-          "A clean, credible home for your business online — built to make you look as good as you are.",
-      },
-      {
-        title: "Landing pages",
-        description:
-          "Focused pages designed to turn visitors into leads and inquiries.",
-      },
-      {
-        title: "Dashboards & admin panels",
-        description:
-          "See what's happening in your business and control it — without a wall of spreadsheets.",
-      },
-      {
-        title: "Client portals & internal tools",
-        description:
-          "Give clients or your team a simple, reliable way to work with you.",
-      },
-      {
-        title: "MVPs & SaaS products",
-        description: "Test an idea quickly with a solid first version you can build on.",
-      },
-      {
-        title: "Automations & integrations",
-        description:
-          "Make the tools you already use talk to each other — and stop doing things by hand.",
-      },
-    ],
-  },
-
   work: {
     tag: "Selected work",
     title: "A few things I've built",
@@ -164,58 +130,128 @@ export const en = {
       placeholder: "Placeholder",
       completed: "COMPLETED",
       inProgress: "IN PROGRESS",
+      viewLive: "View live",
+      selectProject: "Select project",
     },
-    /**
-     * ⚠️ Replace the placeholder entries below with your real projects.
-     * Edit the same entries in `id.ts` for the Indonesian version.
-     * JEPANGKU ships as an example (from the brand guidelines).
-     */
     projects: [
       {
-        name: "JEPANGKU",
+        name: "MacLand",
+        type: "3D PRODUCT SHOWCASE",
+        stack: "NEXT.JS · THREE.JS · GSAP",
+        status: "completed",
+        year: "2025",
+        tagline: "The future of the web is immersive.",
+        problem:
+          "A static product page couldn't convey the tactile feel of a premium device — visitors needed to experience it, not just read about it.",
+        outcome:
+          "An interactive 3D MacBook experience with scroll-driven animations that keeps users exploring every detail of the product.",
+        role: "FULL-STACK · 3D INTEGRATION",
+        description: [
+          "Why just look at a product when you can experience it? MacLand explores the boundary between static web pages and high-fidelity 3D environments.",
+          "A fully interactive 3D model sits inside a polished web interface — users can explore every curve and detail of the MacBook Pro.",
+          "Built with Three.js for 3D rendering and GSAP for precision scroll animations, optimized so transitions feel as smooth as a native app.",
+        ],
+        href: "https://mac-land-omega.vercel.app/",
+        screenImage: "/projects/macland.jpeg",
+      },
+      {
+        name: "Kris-OS",
+        type: "INTERACTIVE PORTFOLIO",
+        stack: "NEXT.JS · GSAP · ZUSTAND",
+        status: "completed",
+        year: "2025",
+        tagline: "A portfolio that feels like a desktop.",
+        problem:
+          "Traditional portfolio sites blend together — recruiters and clients needed a memorable way to browse projects and skills.",
+        outcome:
+          "A macOS-inspired desktop experience with draggable windows, Finder navigation, and project showcases that stand out from template portfolios.",
+        role: "DESIGN + FULL-STACK DEVELOPMENT",
+        description: [
+          "Kris-OS reimagines a developer portfolio as a living desktop environment — complete with dock, Finder, and native-feeling windows.",
+          "Each project lives in its own folder with descriptions, screenshots, and live demo links — browsed the way you'd explore files on a Mac.",
+          "GSAP powers smooth window animations and draggable interactions, while Next.js keeps the experience fast and deployable anywhere.",
+        ],
+        href: "https://krisadiwinata.online/",
+        screenImage: "/projects/kris-portfolio.jpeg",
+      },
+      {
+        name: "Jepangku",
         type: "LEARNING PLATFORM",
         stack: "REACT · GO · POSTGRESQL",
         status: "completed",
-        year: "—",
-        problem:
-          "Language learners needed a structured way to practice and track progress online.",
-        outcome:
-          "A complete learning platform with progress tracking that keeps students engaged and coming back.",
-        role: "FULL-STACK DEVELOPMENT",
-        isPlaceholder: true,
-      },
-      {
-        name: "YOUR PROJECT",
-        type: "E.G. COMPANY WEBSITE",
-        stack: "REACT · NEXT.JS",
-        status: "completed",
         year: "2024",
-        problem: "Describe the client's problem here — what were they struggling with?",
-        outcome: "Describe the outcome — what improved after the project shipped?",
-        role: "E.G. DESIGN + DEVELOPMENT",
-        isPlaceholder: true,
+        tagline: "Structured Japanese learning, online.",
+        problem:
+          "Language learners needed a structured way to practice and track progress online — scattered resources weren't enough.",
+        outcome:
+          "A complete learning platform with progress tracking and interactive lessons that keeps students engaged and coming back.",
+        role: "FULL-STACK DEVELOPMENT",
+        description: [
+          "Jepangku gives Japanese learners a dedicated space to study with clear lesson paths and measurable progress.",
+          "The platform combines structured curriculum with tracking tools so students always know where they stand.",
+          "Built for retention — every interaction is designed to keep learners motivated through their language journey.",
+        ],
+        href: "https://kursus.jepangku.com",
+        screenImage: "/projects/kursus-jepangku.jpeg",
       },
       {
-        name: "YOUR PROJECT",
-        type: "E.G. ADMIN DASHBOARD",
+        name: "AAPM Layerfarm",
+        type: "FARM MANAGEMENT SYSTEM",
         stack: "REACT · NODE.JS · POSTGRESQL",
         status: "completed",
         year: "2024",
-        problem: "Describe the client's problem here — what were they struggling with?",
-        outcome: "Describe the outcome — what improved after the project shipped?",
-        role: "E.G. FULL-STACK DEVELOPMENT",
-        isPlaceholder: true,
+        tagline: "Digitizing layer farm operations.",
+        problem:
+          "Manual record-keeping and disconnected spreadsheets made it hard to track flock health, production, and costs across the farm.",
+        outcome:
+          "A centralized management dashboard that gives farm operators real-time visibility into operations and cuts down on paperwork.",
+        role: "FULL-STACK DEVELOPMENT",
+        description: [
+          "AAPM Layerfarm Management replaces paper logs and scattered spreadsheets with one system for daily farm operations.",
+          "Operators can monitor production metrics, manage flock records, and generate reports without switching between tools.",
+          "Designed for the field — a clear interface that works for staff who need answers fast, not another complicated ERP.",
+        ],
+        screenImage: "/projects/AAPM-layerfarm-management.jpeg",
       },
       {
-        name: "YOUR PROJECT",
-        type: "E.G. CUSTOM SOFTWARE",
-        stack: "REACT · GO · POSTGRESQL",
+        name: "Charissa Event",
+        type: "EVENT WEBSITE",
+        stack: "REACT · NEXT.JS · TAILWIND",
         status: "completed",
-        year: "2023",
-        problem: "Describe the client's problem here — what were they struggling with?",
-        outcome: "Describe the outcome — what improved after the project shipped?",
-        role: "E.G. BACKEND + INTEGRATION",
-        isPlaceholder: true,
+        year: "2024",
+        tagline: "Events deserve a stage online.",
+        problem:
+          "The client needed a professional web presence to promote events, share details, and build credibility with attendees.",
+        outcome:
+          "A polished event website that communicates brand identity clearly and gives visitors everything they need to engage.",
+        role: "DESIGN + FRONT-END DEVELOPMENT",
+        description: [
+          "Charissa Event needed a website that matches the quality of the events themselves — professional, inviting, and easy to navigate.",
+          "The site highlights upcoming events, brand story, and contact paths so potential clients can reach out with confidence.",
+          "Built with modern front-end tooling for fast load times and a responsive layout across every device.",
+        ],
+        href: "https://charissaevent.com/",
+        screenImage: "/projects/charissaevent.jpeg",
+      },
+      {
+        name: "Seculture",
+        type: "CULTURAL PLATFORM",
+        stack: "REACT · NEXT.JS · TAILWIND",
+        status: "completed",
+        year: "2024",
+        tagline: "Culture, presented with clarity.",
+        problem:
+          "A cultural organization needed a digital home to share their mission, programs, and stories with a wider audience.",
+        outcome:
+          "A content-rich website that presents cultural initiatives professionally and makes information easy to discover.",
+        role: "FRONT-END DEVELOPMENT",
+        description: [
+          "Seculture brings cultural programs and stories to the web with a layout designed for readability and visual impact.",
+          "Visitors can explore initiatives, learn about the organization's mission, and stay connected to upcoming activities.",
+          "Clean typography and responsive design ensure the content shines on any screen size.",
+        ],
+        href: "https://seculture.id/",
+        screenImage: "/projects/Seculture.jpeg",
       },
     ] as Project[],
   },

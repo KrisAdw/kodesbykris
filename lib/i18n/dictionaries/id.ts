@@ -28,7 +28,7 @@ export const id: Messages = {
       { label: "Layanan", href: "#services" },
       { label: "Portfolio", href: "#work" },
       { label: "Cara Kerja", href: "#process" },
-      { label: "Tentang", href: "#about" },
+      { label: "Tentang", href: "#why" },
       { label: "FAQ", href: "#faq" },
     ],
     startProject: "Gas Bikin Proyek",
@@ -59,6 +59,13 @@ export const id: Messages = {
       "MVP",
       "INTEGRASI",
       "OTOMASI",
+    ],
+    quotes: [
+      "Bingung mulai dari mana bikin website",
+      "Semua masih manual — capek banget",
+      "Website lama lemot & ketinggalan zaman",
+      "Butuh dashboard buat data bisnis",
+      "Punya ide tapi nggak bisa dibangun",
     ],
   },
 
@@ -96,44 +103,6 @@ export const id: Messages = {
     ],
   },
 
-  canBuild: {
-    tag: "Bisa bikin apa aja?",
-    title: 'Jawaban singkat buat pertanyaan "lu bisa bantu apa aja?"',
-    lead: "Tanpa istilah teknis yang bikin pusing. Kalau kebutuhan lu ada di list ini, berarti ini makanan sehari-hari yang udah sering gua bangun.",
-    items: [
-      {
-        title: "Website Bisnis & Company Profile",
-        description:
-          "Etalase digital yang clean, modern, dan bikin brand lu keliatan jauh lebih kredibel di mata calon klien.",
-      },
-      {
-        title: "Landing Page Fokus Konversi",
-        description:
-          "Halaman to-the-point yang didesain buat nge-hook calon pembeli dan ngedongkrak leads masuk ke WhatsApp/email.",
-      },
-      {
-        title: "Dashboard & Admin Panel",
-        description:
-          "Pantau performa bisnis dan atur data penting dalam satu layar — say goodbye to spreadsheet yang berantakan.",
-      },
-      {
-        title: "Client Portal & Internal Tools",
-        description:
-          "Sediakan workspace simpel dan reliable biar tim atau klien lu bisa kolaborasi tanpa drama salah kirim file.",
-      },
-      {
-        title: "MVP & Produk SaaS",
-        description:
-          "Validasi ide startup/bisnis lu secara kilat pakai versi pertama yang kokoh, rapi, dan siap di-scale up.",
-      },
-      {
-        title: "Otomasi & Integrasi Sistem",
-        description:
-          "Bikin tools yang udah lu pakai saling nyambung otomatis — biar lu nggak capek copy-paste manual tiap hari.",
-      },
-    ],
-  },
-
   work: {
     tag: "Selected Work",
     title: "Beberapa hal yang udah pernah gua bangun",
@@ -148,53 +117,128 @@ export const id: Messages = {
       placeholder: "Placeholder",
       completed: "SELESAI",
       inProgress: "ON PROGRESS",
+      viewLive: "Lihat live",
+      selectProject: "Pilih proyek",
     },
     projects: [
       {
-        name: "JEPANGKU",
+        name: "MacLand",
+        type: "3D PRODUCT SHOWCASE",
+        stack: "NEXT.JS · THREE.JS · GSAP",
+        status: "completed",
+        year: "2025",
+        tagline: "Masa depan web itu immersive.",
+        problem:
+          "Halaman produk statis nggak cukup nunjukin feel premium sebuah device — pengunjung perlu merasakannya, bukan cuma baca.",
+        outcome:
+          "Pengalaman MacBook 3D interaktif dengan animasi scroll yang bikin user explore setiap detail produk.",
+        role: "FULL-STACK · 3D INTEGRATION",
+        description: [
+          "Kenapa cuma lihat produk kalau bisa dialami? MacLand explore batas antara halaman web statis dan environment 3D high-fidelity.",
+          "Model 3D interaktif penuh ada di dalam interface web yang rapi — user bisa explore setiap kurva dan detail MacBook Pro.",
+          "Dibangun pakai Three.js buat rendering 3D dan GSAP buat animasi scroll presisi, dioptimasi biar transisinya sehalus app native.",
+        ],
+        href: "https://mac-land-omega.vercel.app/",
+        screenImage: "/projects/macland.jpeg",
+      },
+      {
+        name: "Kris-OS",
+        type: "INTERACTIVE PORTFOLIO",
+        stack: "NEXT.JS · GSAP · ZUSTAND",
+        status: "completed",
+        year: "2025",
+        tagline: "Portfolio yang kerasa kayak desktop.",
+        problem:
+          "Portfolio tradisional pada mirip-mirip — recruiter dan klien butuh cara yang memorable buat browse project dan skill.",
+        outcome:
+          "Pengalaman desktop ala macOS dengan window draggable, navigasi Finder, dan showcase project yang beda dari template portfolio.",
+        role: "DESIGN + FULL-STACK DEVELOPMENT",
+        description: [
+          "Kris-OS reimagines portfolio developer sebagai desktop environment yang hidup — lengkap dengan dock, Finder, dan window yang kerasa native.",
+          "Tiap project ada di folder sendiri dengan deskripsi, screenshot, dan link demo — dibrowse kayak explore file di Mac.",
+          "GSAP handle animasi window dan interaksi draggable, sementara Next.js jaga performa tetap cepat dan bisa di-deploy di mana aja.",
+        ],
+        href: "https://krisadiwinata.online/",
+        screenImage: "/projects/kris-portfolio.jpeg",
+      },
+      {
+        name: "Jepangku",
         type: "LEARNING PLATFORM",
         stack: "REACT · GO · POSTGRESQL",
         status: "completed",
-        year: "—",
-        problem:
-          "Pembelajar bahasa butuh platform terstruktur buat latihan dan tracking progress belajar mereka secara interaktif.",
-        outcome:
-          "Platform belajar interaktif dengan fitur gamifikasi & progress tracker yang bikin retensi user meningkat.",
-        role: "FULL-STACK DEVELOPMENT",
-        isPlaceholder: true,
-      },
-      {
-        name: "PROYEK LU",
-        type: "MISAL: COMPANY WEBSITE",
-        stack: "REACT · NEXT.JS",
-        status: "completed",
         year: "2024",
-        problem: "Tulis kendala klien di sini — misal web lama lemot atau conversion rate drop.",
-        outcome: "Tulis hasil perubahannya — misal traffic naik 2x lipat dan loading makin instan.",
-        role: "MISAL: UI/UX + FULLSTACK DEV",
-        isPlaceholder: true,
+        tagline: "Belajar bahasa Jepang terstruktur, online.",
+        problem:
+          "Pembelajar bahasa butuh cara terstruktur buat latihan dan tracking progress online — resource yang tersebar nggak cukup.",
+        outcome:
+          "Platform belajar lengkap dengan progress tracking dan lesson interaktif yang bikin siswa betah dan balik lagi.",
+        role: "FULL-STACK DEVELOPMENT",
+        description: [
+          "Jepangku kasih ruang khusus buat pelajar bahasa Jepang dengan lesson path yang jelas dan progress yang terukur.",
+          "Platform ini gabungin kurikulum terstruktur dengan tools tracking biar siswa selalu tahu posisi belajar mereka.",
+          "Dibangun buat retensi — setiap interaksi didesain biar learner tetap termotivasi sepanjang perjalanan belajar.",
+        ],
+        href: "https://kursus.jepangku.com",
+        screenImage: "/projects/kursus-jepangku.jpeg",
       },
       {
-        name: "PROYEK LU",
-        type: "MISAL: ADMIN DASHBOARD",
+        name: "AAPM Layerfarm",
+        type: "FARM MANAGEMENT SYSTEM",
         stack: "REACT · NODE.JS · POSTGRESQL",
         status: "completed",
         year: "2024",
-        problem: "Tulis kendala klien di sini — apa operasional manual yang bikin bottleneck?",
-        outcome: "Tulis solusinya — bagaimana dashboard ini menghemat jam kerja tim.",
-        role: "MISAL: FULL-STACK DEVELOPMENT",
-        isPlaceholder: true,
+        tagline: "Digitalisasi operasional peternakan layer.",
+        problem:
+          "Pencatatan manual dan spreadsheet yang nggak nyambung bikin susah track kesehatan ternak, produksi, dan biaya di peternakan.",
+        outcome:
+          "Dashboard manajemen terpusat yang kasih operator visibilitas real-time ke operasional dan ngurangin paperwork.",
+        role: "FULL-STACK DEVELOPMENT",
+        description: [
+          "AAPM Layerfarm Management ganti log kertas dan spreadsheet tersebar dengan satu sistem buat operasional harian peternakan.",
+          "Operator bisa monitor metrik produksi, kelola catatan ternak, dan generate laporan tanpa bolak-balik antar tools.",
+          "Didesain buat lapangan — interface jelas yang works buat staff yang butuh jawaban cepat, bukan ERP rumit lagi.",
+        ],
+        screenImage: "/projects/AAPM-layerfarm-management.jpeg",
       },
       {
-        name: "PROYEK LU",
-        type: "MISAL: CUSTOM SOFTWARE",
-        stack: "REACT · GO · POSTGRESQL",
+        name: "Charissa Event",
+        type: "EVENT WEBSITE",
+        stack: "REACT · NEXT.JS · TAILWIND",
         status: "completed",
-        year: "2023",
-        problem: "Tulis masalah sistem lama yang butuh solusi kustom.",
-        outcome: "Tulis impact setelah sistem baru diterapkan di operasional.",
-        role: "MISAL: BACKEND + INTEGRASI",
-        isPlaceholder: true,
+        year: "2024",
+        tagline: "Event layaknya punya panggung online.",
+        problem:
+          "Klien butuh web presence profesional buat promosi event, share detail, dan bangun kredibilitas ke peserta.",
+        outcome:
+          "Website event yang rapi, komunikasi brand jelas, dan pengunjung dapet semua info yang mereka butuhin.",
+        role: "DESIGN + FRONT-END DEVELOPMENT",
+        description: [
+          "Charissa Event butuh website yang setara kualitas event-nya — profesional, inviting, dan gampang dinavigasi.",
+          "Situs ini highlight event mendatang, brand story, dan jalur kontak biar calon klien bisa reach out dengan percaya diri.",
+          "Dibangun pakai tooling front-end modern buat load cepat dan layout responsif di semua device.",
+        ],
+        href: "https://charissaevent.com/",
+        screenImage: "/projects/charissaevent.jpeg",
+      },
+      {
+        name: "Seculture",
+        type: "CULTURAL PLATFORM",
+        stack: "REACT · NEXT.JS · TAILWIND",
+        status: "completed",
+        year: "2024",
+        tagline: "Budaya, disajikan dengan jelas.",
+        problem:
+          "Organisasi budaya butuh rumah digital buat share misi, program, dan cerita ke audiens yang lebih luas.",
+        outcome:
+          "Website kaya konten yang presentasi inisiatif budaya secara profesional dan bikin informasi gampang ditemukan.",
+        role: "FRONT-END DEVELOPMENT",
+        description: [
+          "Seculture bawa program dan cerita budaya ke web dengan layout yang didesain buat readability dan visual impact.",
+          "Pengunjung bisa explore inisiatif, pelajari misi organisasi, dan stay connected ke aktivitas mendatang.",
+          "Tipografi bersih dan desain responsif memastikan konten tetap shine di ukuran layar apa pun.",
+        ],
+        href: "https://seculture.id/",
+        screenImage: "/projects/Seculture.jpeg",
       },
     ],
   },

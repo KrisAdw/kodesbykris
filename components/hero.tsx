@@ -1,7 +1,8 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { useMemo, useRef } from "react";
 import { ArrowDown, Mail, MessageCircle } from "lucide-react";
+import Image from "next/image";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { waLink, emailLink } from "@/lib/site";
@@ -9,14 +10,54 @@ import type { Messages } from "@/lib/i18n/get-dictionary";
 import { Button } from "./button";
 import { Marquee } from "./marquee";
 
-const HeroScene = dynamic(() => import("./hero-scene").then((m) => m.HeroScene), {
-  ssr: false,
-  loading: () => null,
-});
+type OrbitParticle = {
+  x: string;
+  y: string;
+  text: string;
+  accent?: boolean;
+};
+
+/** Point on a circle of `radius` px, `angleDeg` degrees from the top.
+ *  Values are rounded and returned as strings so the SSR HTML and the
+ *  hydrated client always serialize identical styles. */
+function orbitPoint(radius: number, angleDeg: number) {
+  const a = (angleDeg * Math.PI) / 180;
+  return {
+    x: `${(Math.sin(a) * radius).toFixed(3)}px`,
+    y: `${(-Math.cos(a) * radius).toFixed(3)}px`,
+  };
+}
+
+const RING_1_RADIUS = 300;
+const RING_2_RADIUS = 430;
 
 export function Hero({ t }: { t: Messages }) {
+  const quotes = t.hero.quotes;
+  const ring1Ref = useRef<HTMLDivElement>(null);
+  const ring2Ref = useRef<HTMLDivElement>(null);
+
+  const ring1 = useMemo<OrbitParticle[]>(
+    () =>
+      quotes.map((text, i) => ({
+        ...orbitPoint(RING_1_RADIUS, i * 72),
+        text,
+        accent: i === 0,
+      })),
+    [quotes]
+  );
+
+  const ring2 = useMemo<OrbitParticle[]>(
+    () =>
+      quotes.map((text, i) => ({
+        ...orbitPoint(RING_2_RADIUS, i * 72 + 36),
+        text,
+      })),
+    [quotes]
+  );
+
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const els = gsap.utils.toArray<HTMLElement>("[data-hero]");
     gsap.fromTo(
       els,
@@ -30,6 +71,34 @@ export function Hero({ t }: { t: Messages }) {
         delay: 0.15,
       }
     );
+
+    // Fade the orbiting quote field in behind everything.
+    const field = [ring1Ref.current, ring2Ref.current].filter(
+      (el): el is HTMLDivElement => Boolean(el)
+    );
+    if (field.length) {
+      gsap.fromTo(field, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.4, delay: 0.4 });
+    }
+
+    // Orbit: rotate each ring, counter-rotate the text so it stays readable.
+    if (ring1Ref.current) {
+      gsap.to(ring1Ref.current, { rotation: 360, duration: 90, repeat: -1, ease: "none" });
+      gsap.to(ring1Ref.current.querySelectorAll("[data-counter]"), {
+        rotation: -360,
+        duration: 90,
+        repeat: -1,
+        ease: "none",
+      });
+    }
+    if (ring2Ref.current) {
+      gsap.to(ring2Ref.current, { rotation: -360, duration: 140, repeat: -1, ease: "none" });
+      gsap.to(ring2Ref.current.querySelectorAll("[data-counter]"), {
+        rotation: 360,
+        duration: 140,
+        repeat: -1,
+        ease: "none",
+      });
+    }
   });
 
   return (
@@ -37,77 +106,154 @@ export function Hero({ t }: { t: Messages }) {
       id="top"
       className="relative flex min-h-svh flex-col overflow-hidden"
     >
-      {/* Engineering grid base + 3D scene */}
+      {/* Engineering grid base */}
       <div className="bg-grid absolute inset-0 opacity-70" aria-hidden />
-      <HeroScene />
+
+      {/* Orbiting quote particles — the problems kodesbykris solves */}
+      <div
+        className="pointer-events-none absolute inset-0 hidden lg:block"
+        aria-hidden
+      >
+        <div ref={ring1Ref} className="absolute top-1/2 left-1/2">
+          {ring1.map((p, i) => (
+            <div
+              key={i}
+              className="absolute"
+              style={{ left: p.x, top: p.y, transform: "translate(-50%, -50%)" }}
+            >
+              <span
+                data-counter
+                className={`block whitespace-nowrap font-mono text-xs tracking-wider uppercase ${
+                  p.accent
+                    ? "text-lime/70"
+                    : "text-neutral-500/45 dark:text-neutral-400/40"
+                }`}
+              >
+                {p.text}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        <div ref={ring2Ref} className="absolute top-1/2 left-1/2">
+          {ring2.map((p, i) => (
+            <div
+              key={i}
+              className="absolute"
+              style={{ left: p.x, top: p.y, transform: "translate(-50%, -50%)" }}
+            >
+              <span
+                data-counter
+                className="block whitespace-nowrap font-mono text-xs tracking-wider text-neutral-500/35 uppercase dark:text-neutral-400/30"
+              >
+                {p.text}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-6 pt-28 pb-16 md:px-8">
-        <div className="max-w-3xl">
-          <p
-            data-hero
-            className="inline-flex items-center gap-2.5 rounded-md border border-line bg-surface/70 px-3.5 py-1.5 font-mono text-xs tracking-wider text-neutral-500 uppercase"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-lime" />
-            </span>
-            {t.hero.availability}
-          </p>
-
-          <h1
-            data-hero
-            className="mt-8 font-display text-5xl leading-[1.04] font-medium tracking-tight text-balance md:text-7xl"
-          >
-            {t.hero.title.pre}
-            <span className="text-lime">{t.hero.title.highlight}</span>
-            {t.hero.title.post}
-          </h1>
-
-          <p
-            data-hero
-            className="mt-6 max-w-xl text-lg leading-relaxed text-neutral-500"
-          >
-            {t.hero.subtitle}
-          </p>
-
-          <div data-hero className="mt-10 flex flex-wrap items-center gap-4">
-            <Button
-              href={waLink(t.contact.whatsappGreeting)}
-              target="_blank"
-              rel="noopener noreferrer"
-              size="lg"
+        <div className="lg:flex lg:items-stretch lg:justify-between lg:gap-10">
+          <div className="max-w-3xl shrink-0">
+            <p
+              data-hero
+              className="inline-flex items-center gap-2.5 rounded-md border border-line bg-surface/70 px-3.5 py-1.5 font-mono text-xs tracking-wider text-neutral-500 uppercase"
             >
-              <MessageCircle className="h-5 w-5" aria-hidden />
-              {t.hero.startProject}
-            </Button>
-            <Button href={emailLink(t.contact.emailSubject)} variant="outline" size="lg">
-              <Mail className="h-5 w-5" aria-hidden />
-              {t.hero.emailMe}
-            </Button>
-            <a
-              href="#work"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-neutral-500 transition-colors hover:text-foreground"
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-lime" />
+              </span>
+              {t.hero.availability}
+            </p>
+
+            <h1
+              data-hero
+              className="mt-8 font-display text-5xl leading-[1.04] font-medium tracking-tight text-balance md:text-7xl"
             >
-              {t.hero.viewWork}
-              <ArrowDown
-                className="h-4 w-4 transition-transform group-hover:translate-y-0.5"
-                aria-hidden
+              {t.hero.title.pre}
+              <span className="text-lime">{t.hero.title.highlight}</span>
+              {t.hero.title.post}
+            </h1>
+
+            {/* Mascot — mobile: between title and subtitle */}
+            <div
+              data-hero
+              className="mt-6 flex justify-center lg:hidden"
+              aria-hidden
+            >
+              <Image
+                src="/maskot/maskot-kris.png"
+                alt=""
+                width={1402}
+                height={1122}
+                priority
+                className="h-auto w-72 drop-shadow-xl mask-[linear-gradient(to_bottom,black_72%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_72%,transparent)] sm:w-80"
               />
-            </a>
+            </div>
+
+            <p
+              data-hero
+              className="mt-6 max-w-xl text-lg leading-relaxed text-neutral-500"
+            >
+              {t.hero.subtitle}
+            </p>
+
+            <div data-hero className="mt-10 flex flex-wrap items-center gap-4">
+              <Button
+                href={waLink(t.contact.whatsappGreeting)}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="lg"
+              >
+                <MessageCircle className="h-5 w-5" aria-hidden />
+                {t.hero.startProject}
+              </Button>
+              <Button href={emailLink(t.contact.emailSubject)} variant="outline" size="lg">
+                <Mail className="h-5 w-5" aria-hidden />
+                {t.hero.emailMe}
+              </Button>
+              <a
+                href="#work"
+                className="group inline-flex items-center gap-2 text-sm font-medium text-neutral-500 transition-colors hover:text-foreground"
+              >
+                {t.hero.viewWork}
+                <ArrowDown
+                  className="h-4 w-4 transition-transform group-hover:translate-y-0.5"
+                  aria-hidden
+                />
+              </a>
+            </div>
           </div>
 
-          <dl
+          {/* Mascot — desktop: right column, height matches headline–CTA block */}
+          <div
             data-hero
-            className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-line pt-6 font-mono text-xs tracking-wider text-neutral-500 uppercase"
+            className="hidden shrink-0 -translate-x-1/2 items-end justify-end self-stretch lg:flex xl:-translate-x-44"
+            aria-hidden
           >
-            {t.hero.meta.map((item) => (
-              <div key={item}>
-                <dt className="sr-only">{item}</dt>
-                <dd>{item}</dd>
-              </div>
-            ))}
-          </dl>
+            <Image
+              src="/maskot/maskot-kris.png"
+              alt=""
+              width={1402}
+              height={1122}
+              priority
+              className="h-full w-auto max-w-[min(62vw,44rem)] object-contain object-bottom-right drop-shadow-xl mask-[linear-gradient(to_bottom,black_78%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black_78%,transparent)]"
+            />
+          </div>
         </div>
+
+        <dl
+          data-hero
+          className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-line pt-6 font-mono text-xs tracking-wider text-neutral-500 uppercase"
+        >
+          {t.hero.meta.map((item) => (
+            <div key={item}>
+              <dt className="sr-only">{item}</dt>
+              <dd>{item}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
 
       <Marquee items={t.hero.marquee} />

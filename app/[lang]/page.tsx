@@ -2,11 +2,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Hero } from "@/components/hero";
 import { Services } from "@/components/services";
-import { CanBuild } from "@/components/can-build";
 import { Work } from "@/components/work";
 import { Why } from "@/components/why";
 import { Process } from "@/components/process";
-import { About } from "@/components/about";
 import { Faq } from "@/components/faq";
 import { Cta } from "@/components/cta";
 import { SITE } from "@/lib/site";
@@ -70,11 +68,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
       <main id="main" className="flex-1">
         <Hero t={t} />
         <Services />
-        <CanBuild />
         <Work />
         <Why />
         <Process />
-        <About />
         <Faq t={t} />
         <Cta />
       </main>

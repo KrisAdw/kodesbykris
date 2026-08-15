@@ -8,7 +8,7 @@ export async function Process() {
   return (
     <Section
       id="process"
-      index="05"
+      index="04"
       label={t.process.tag}
       title={t.process.title}
       lead={t.process.lead}

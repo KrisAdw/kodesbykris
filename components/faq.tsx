@@ -12,7 +12,7 @@ export function Faq({ t }: { t: Messages }) {
   return (
     <Section
       id="faq"
-      index="07"
+      index="05"
       label={t.faq.tag}
       title={t.faq.title}
       lead={t.faq.lead}
