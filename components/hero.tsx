@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 import { ArrowDown, Mail, MessageCircle } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { SITE, emailLink } from "@/lib/site";
+import { waLink, emailLink } from "@/lib/site";
+import type { Messages } from "@/lib/i18n/get-dictionary";
 import { Button } from "./button";
 import { Marquee } from "./marquee";
 
@@ -13,7 +14,7 @@ const HeroScene = dynamic(() => import("./hero-scene").then((m) => m.HeroScene),
   loading: () => null,
 });
 
-export function Hero() {
+export function Hero({ t }: { t: Messages }) {
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const els = gsap.utils.toArray<HTMLElement>("[data-hero]");
@@ -50,45 +51,44 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-lime" />
             </span>
-            {SITE.availability}
+            {t.hero.availability}
           </p>
 
           <h1
             data-hero
             className="mt-8 font-display text-5xl leading-[1.04] font-medium tracking-tight text-balance md:text-7xl"
           >
-            I build software that solves{" "}
-            <span className="text-lime">real</span> business problems.
+            {t.hero.title.pre}
+            <span className="text-lime">{t.hero.title.highlight}</span>
+            {t.hero.title.post}
           </h1>
 
           <p
             data-hero
             className="mt-6 max-w-xl text-lg leading-relaxed text-neutral-500"
           >
-            Websites, web apps, dashboards, and custom tools — built by Kris,
-            for people who need things that work. Direct collaboration, no
-            agency runaround.
+            {t.hero.subtitle}
           </p>
 
           <div data-hero className="mt-10 flex flex-wrap items-center gap-4">
             <Button
-              href={SITE.whatsappLink}
+              href={waLink(t.contact.whatsappGreeting)}
               target="_blank"
               rel="noopener noreferrer"
               size="lg"
             >
               <MessageCircle className="h-5 w-5" aria-hidden />
-              Start a Project
+              {t.hero.startProject}
             </Button>
-            <Button href={emailLink} variant="outline" size="lg">
+            <Button href={emailLink(t.contact.emailSubject)} variant="outline" size="lg">
               <Mail className="h-5 w-5" aria-hidden />
-              Email me
+              {t.hero.emailMe}
             </Button>
             <a
               href="#work"
               className="group inline-flex items-center gap-2 text-sm font-medium text-neutral-500 transition-colors hover:text-foreground"
             >
-              View my work
+              {t.hero.viewWork}
               <ArrowDown
                 className="h-4 w-4 transition-transform group-hover:translate-y-0.5"
                 aria-hidden
@@ -100,24 +100,17 @@ export function Hero() {
             data-hero
             className="mt-14 flex flex-wrap gap-x-8 gap-y-3 border-t border-line pt-6 font-mono text-xs tracking-wider text-neutral-500 uppercase"
           >
-            <div>
-              <dt className="sr-only">Location</dt>
-              <dd>Based in {SITE.location}</dd>
-            </div>
-            {/* ⚠️ TODO: update with your real figures */}
-            <div>
-              <dt className="sr-only">Experience</dt>
-              <dd>{SITE.stats.yearsExperience} years experience</dd>
-            </div>
-            <div>
-              <dt className="sr-only">Projects shipped</dt>
-              <dd>{SITE.stats.projectsShipped} projects shipped</dd>
-            </div>
+            {t.hero.meta.map((item) => (
+              <div key={item}>
+                <dt className="sr-only">{item}</dt>
+                <dd>{item}</dd>
+              </div>
+            ))}
           </dl>
         </div>
       </div>
 
-      <Marquee />
+      <Marquee items={t.hero.marquee} />
     </section>
   );
 }

@@ -1,9 +1,12 @@
 import { Mail, MessageCircle } from "lucide-react";
 import { Reveal } from "./reveal";
-import { SITE, emailLink } from "@/lib/site";
 import { Button } from "./button";
+import { SITE, waLink, emailLink } from "@/lib/site";
+import { getDictionary } from "@/lib/i18n/get-dictionary";
 
-export function Cta() {
+export async function Cta() {
+  const t = await getDictionary();
+
   return (
     <section
       id="contact"
@@ -19,29 +22,28 @@ export function Cta() {
             id="contact-title"
             className="mx-auto mt-6 max-w-3xl font-display text-4xl leading-tight font-medium tracking-tight text-balance md:text-6xl"
           >
-            Got a project in mind? Let&apos;s build something that works.
+            {t.cta.title}
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-canvas/70">
-            Tell me what you&apos;re trying to achieve and I&apos;ll tell you
-            honestly how I can help — within a day.
+            {t.cta.subtitle}
           </p>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Button
-              href={SITE.whatsappLink}
+              href={waLink(t.contact.whatsappGreeting)}
               target="_blank"
               rel="noopener noreferrer"
               size="lg"
             >
               <MessageCircle className="h-5 w-5" aria-hidden />
-              Start a Project on WhatsApp
+              {t.cta.startWhatsApp}
             </Button>
-            <Button href={emailLink} variant="outline-light" size="lg">
+            <Button href={emailLink(t.contact.emailSubject)} variant="outline-light" size="lg">
               <Mail className="h-5 w-5" aria-hidden />
-              Email {SITE.email}
+              {t.cta.emailLabel} {SITE.email}
             </Button>
           </div>
           <p className="mt-8 font-mono text-xs tracking-wider text-canvas/50">
-            {SITE.whatsappDisplay} · Based in {SITE.location}
+            {SITE.whatsappDisplay} · {t.cta.meta}
           </p>
         </Reveal>
       </div>

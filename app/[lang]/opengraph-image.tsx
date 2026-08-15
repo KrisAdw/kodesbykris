@@ -5,7 +5,18 @@ export const alt = "kodesbykris — Custom websites and software, built by Kris"
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OgImage() {
+export default async function OgImage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const isId = lang === "id";
+
+  const headline = isId
+    ? ["Saya membangun software yang memecahkan", "masalah nyata bisnis Anda."]
+    : ["I build software that solves", "real business problems."];
+
   return new ImageResponse(
     (
       <div
@@ -54,9 +65,9 @@ export default function OgImage() {
               flexDirection: "column",
             }}
           >
-            <span>I build software that solves</span>
+            <span>{headline[0]}</span>
             <span>
-              <span style={{ color: "#82AE20" }}>real</span> business problems.
+              <span style={{ color: "#82AE20" }}>{headline[1]}</span>
             </span>
           </div>
         </div>

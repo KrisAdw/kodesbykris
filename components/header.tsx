@@ -2,11 +2,19 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { SITE } from "@/lib/site";
+import { SITE, waLink } from "@/lib/site";
+import { locales, localeLabels, type Locale } from "@/lib/i18n/config";
+import type { Messages } from "@/lib/i18n/get-dictionary";
 import { Button } from "./button";
 
-export function Header() {
+type HeaderProps = {
+  t: Messages;
+  locale: Locale;
+};
+
+export function Header({ t, locale }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -30,6 +38,8 @@ export function Header() {
       );
   }, [open]);
 
+  const startHref = waLink(t.contact.whatsappGreeting);
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
@@ -41,29 +51,29 @@ export function Header() {
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 md:h-18 md:px-8">
         <a
           href="#top"
-          aria-label={`${SITE.name} — back to top`}
+          aria-label={`${SITE.name} — ${t.header.logoAlt}`}
           className="flex items-center"
         >
           <Image
             src="/brands/Brand Logo.png"
-            alt="kodesbykris logo"
-            width={180}
-            height={60}
+            alt={t.header.logoAlt}
+            width={2063}
+            height={633}
             loading="eager"
-            className="block h-6 w-auto dark:hidden"
+            className="block h-11 w-auto dark:hidden"
           />
           <Image
             src="/brands/Brand Logo Dark.png"
-            alt="kodesbykris logo"
-            width={180}
-            height={60}
+            alt={t.header.logoAlt}
+            width={2119}
+            height={672}
             loading="eager"
-            className="hidden h-6 w-auto dark:block"
+            className="hidden h-11 w-auto dark:block"
           />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
-          {SITE.nav.map((item) => (
+          {t.header.nav.map((item) => (
             <a
               key={item.href}
               href={item.href}
@@ -75,23 +85,31 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          {/* Desktop only — mobile puts the switcher inside the hamburger menu */}
+          <div className="hidden md:block">
+            <LanguageSwitcher t={t} locale={locale} />
+          </div>
           <Button
-            href={SITE.whatsappLink}
+            href={startHref}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden md:inline-flex"
           >
-            Start a Project
+            {t.header.startProject}
           </Button>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? "Close menu" : "Open menu"}
+            aria-label={open ? t.header.closeMenu : t.header.openMenu}
             className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-foreground md:hidden"
           >
-            {open ? <X className="h-5 w-5" aria-hidden /> : <Menu className="h-5 w-5" aria-hidden />}
+            {open ? (
+              <X className="h-5 w-5" aria-hidden />
+            ) : (
+              <Menu className="h-5 w-5" aria-hidden />
+            )}
           </button>
         </div>
       </div>
@@ -103,7 +121,7 @@ export function Header() {
           className="border-t border-line bg-background px-6 py-6 md:hidden"
         >
           <ul className="flex flex-col gap-4">
-            {SITE.nav.map((item) => (
+            {t.header.nav.map((item) => (
               <li key={item.href}>
                 <a
                   href={item.href}
@@ -113,14 +131,58 @@ export function Header() {
                 </a>
               </li>
             ))}
+            <li className="flex items-center justify-between gap-4 pt-4">
+              <LanguageSwitcher t={t} locale={locale} />
+            </li>
             <li className="pt-2">
-              <Button href={SITE.whatsappLink} target="_blank" rel="noopener noreferrer" size="lg" className="w-full">
-                Start a Project
+              <Button
+                href={startHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="lg"
+                className="w-full"
+              >
+                {t.header.startProject}
               </Button>
             </li>
           </ul>
         </nav>
       ) : null}
     </header>
+  );
+}
+
+/** Compact EN | ID segmented control linking to the other locale(s). */
+function LanguageSwitcher({
+  t,
+  locale,
+}: {
+  t: Messages;
+  locale: Locale;
+}) {
+  return (
+    <div
+      role="group"
+      aria-label={t.header.languageLabel}
+      className="flex items-center rounded-md border border-line p-0.5"
+    >
+      {locales.map((lang) => {
+        const active = lang === locale;
+        return (
+          <Link
+            key={lang}
+            href={`/${lang}`}
+            aria-current={active ? "page" : undefined}
+            className={`rounded-sm px-2.5 py-1 font-mono text-xs tracking-wider transition-colors ${
+              active
+                ? "bg-ink text-canvas dark:bg-canvas dark:text-ink"
+                : "text-neutral-500 hover:text-foreground"
+            }`}
+          >
+            {localeLabels[lang]}
+          </Link>
+        );
+      })}
+    </div>
   );
 }

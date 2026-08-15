@@ -4,17 +4,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
-const ITEMS = [
-  "WEBSITES",
-  "WEB APPS",
-  "DASHBOARDS",
-  "CUSTOM SOFTWARE",
-  "MVPS",
-  "INTEGRATIONS",
-  "AUTOMATION",
-];
-
-export function Marquee() {
+export function Marquee({ items }: { items: string[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -32,7 +22,7 @@ export function Marquee() {
 
   const row = (
     <div className="flex shrink-0 items-center" aria-hidden>
-      {ITEMS.map((item) => (
+      {items.map((item) => (
         <span
           key={item}
           className="flex items-center gap-10 pr-10 font-mono text-xs tracking-[0.3em] text-neutral-500 uppercase"

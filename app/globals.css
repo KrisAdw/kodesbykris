@@ -108,8 +108,115 @@ body {
   background-size: 64px 64px;
 }
 
+/* ── WhatsApp FAB entrance ────────────────────────────────
+   Pure CSS so the button can never get stuck small: the
+   animation always ends at scale(1) and, even if the CSS
+   failed entirely, no inline transform is ever written.
+   (A GSAP from() tween used to leave scale(0.4) behind.) */
+@keyframes fab-pop {
+  from {
+    transform: scale(0.4);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Soft attention ring after the pop settles. */
+@keyframes fab-ring {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.fab-enter {
+  animation: fab-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both;
+}
+
+.fab-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: rgba(37, 211, 102, 0.35);
+  animation: fab-ring 1.2s ease-out 1.4s both;
+  z-index: -1;
+}
+
+/* ── Splash screen ──────────────────────────────────────────
+   Pure CSS so it's present from the very first paint (it lives in
+   the SSR HTML) and can never get stuck: the overlay's own animation
+   hides it even if JavaScript never runs. One shared timeline:
+   logo fill + bar + counter run 0.1s–1.6s, hold, fade out by 2.4s. */
+
+@property --splash-count {
+  syntax: "<integer>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.splash-overlay {
+  animation: splash-hide 0.5s ease-in-out 1.9s both;
+}
+
+@keyframes splash-hide {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Logo color fills in left → right over the gray silhouette. */
+.splash-fill {
+  clip-path: inset(0% 100% 0% 0%);
+  animation: splash-fill-reveal 1.5s ease-in-out 0.1s both;
+}
+
+@keyframes splash-fill-reveal {
+  to {
+    clip-path: inset(0% 0% 0% 0%);
+  }
+}
+
+/* Progress bar grows in sync with the fill. */
+.splash-bar {
+  transform: scaleX(0);
+  animation: splash-bar-grow 1.5s ease-in-out 0.1s both;
+}
+
+@keyframes splash-bar-grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Percentage counter, driven purely by CSS (@property animation). */
+.splash-counter::before {
+  content: counter(splash-count, decimal-leading-zero);
+  counter-reset: splash-count var(--splash-count);
+  animation: splash-count-up 1.5s ease-in-out 0.1s both;
+}
+
+@keyframes splash-count-up {
+  to {
+    --splash-count: 100;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .fab-enter,
+  .fab-pulse::after {
+    animation: none;
+  }
+  .splash-overlay {
+    display: none;
   }
 }
