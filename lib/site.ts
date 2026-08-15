@@ -28,8 +28,8 @@ export const SITE = {
 
   // ⚠️ TODO: replace with real figures.
   stats: {
-    yearsExperience: "5+",
-    projectsShipped: "40+",
+    yearsExperience: "3+",
+    projectsShipped: "20+",
   },
 } as const;
 

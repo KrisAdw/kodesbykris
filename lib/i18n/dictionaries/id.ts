@@ -51,7 +51,7 @@ export const id: Messages = {
     startProject: "Mulai Proyek",
     emailMe: "Kirim Email",
     viewWork: "Lihat Karya",
-    meta: ["Based in Indonesia", "5+ tahun pengalaman", "40+ proyek kelar"],
+    meta: ["Based in Indonesia", "3+ tahun pengalaman", "20+ proyek kelar"],
     marquee: [
       "WEBSITE",
       "WEB APP",
@@ -223,20 +223,20 @@ export const id: Messages = {
       },
       {
         name: "Seculture",
-        type: "CULTURAL PLATFORM",
+        type: "COMPANY PROFILE",
         stack: "REACT · NEXT.JS · TAILWIND",
         status: "completed",
         year: "2024",
-        tagline: "Budaya, disajikan dengan jelas.",
+        tagline: "Perusahaan event, ditampilkan profesional.",
         problem:
-          "Organisasi budaya butuh rumah digital buat share misi, program, dan cerita ke audiens yang lebih luas.",
+          "Perusahaan rental alat event dan event organizer butuh web presence profesional yang nunjukin ke klien apa yang mereka kerjain — dan bangun kepercayaan sebelum kontak pertama.",
         outcome:
-          "Website kaya konten yang presentasi inisiatif budaya secara profesional dan bikin informasi gampang ditemukan.",
+          "Website company profile yang rapi dan jelas, nampilin layanan serta peralatan yang mereka punya, bikin calon klien paham penawarannya dan berani reach out.",
         role: "FRONT-END DEVELOPMENT",
         description: [
-          "Seculture bawa program dan cerita budaya ke web dengan layout yang didesain buat readability dan visual impact.",
-          "Pengunjung bisa explore inisiatif, pelajari misi organisasi, dan stay connected ke aktivitas mendatang.",
-          "Tipografi bersih dan desain responsif memastikan konten tetap shine di ukuran layar apa pun.",
+          "Seculture adalah perusahaan rental alat event dan event organizer — websitenya jadi company profile yang udah 'jualan' duluan sebelum ada orang yang diajak ngobrol.",
+          "Situs ini nampilin layanan mereka — acara perusahaan, pernikahan, konser, dan lainnya — dalam layout yang jelas dan kredibel, gampang ditemuin dan gampang dihubungi.",
+          "Tipografi bersih dan desain responsif bikin profil tetap profesional di semua device, sesuai dengan kualitas event yang mereka kerjain.",
         ],
         href: "https://seculture.id/",
         screenImage: "/projects/Seculture.jpeg",

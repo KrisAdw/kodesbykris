@@ -60,7 +60,7 @@ export function Header({ t, locale }: HeaderProps) {
             width={2063}
             height={633}
             loading="eager"
-            className="block h-11 w-auto dark:hidden"
+            className="block h-12 w-auto dark:hidden md:h-18"
           />
           <Image
             src="/brands/Brand Logo Dark.png"
@@ -68,7 +68,7 @@ export function Header({ t, locale }: HeaderProps) {
             width={2119}
             height={672}
             loading="eager"
-            className="hidden h-11 w-auto dark:block"
+            className="hidden h-12 w-auto dark:block md:h-18"
           />
         </a>
 

@@ -121,7 +121,15 @@ export function Hero({ t }: { t: Messages }) {
 
       {/* Orbiting quote particles — the problems kodesbykris solves */}
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div ref={ring1Ref} className="absolute top-1/2 left-1/2">
+        {/* Ring centers are clamped below the fixed navbar so the orbiting
+            text never floats behind it: navbar height + clearance + outer
+            ring radius (mobile 64+20+250=334px, desktop 72+20+430=522px). */}
+        <div
+          ref={ring1Ref}
+          className={`absolute left-1/2 ${
+            isMobile ? "top-[max(50%,334px)]" : "top-[max(50%,522px)]"
+          }`}
+        >
           {ring1.map((p, i) => (
             <div
               key={i}
@@ -142,7 +150,12 @@ export function Hero({ t }: { t: Messages }) {
           ))}
         </div>
 
-        <div ref={ring2Ref} className="absolute top-1/2 left-1/2">
+        <div
+          ref={ring2Ref}
+          className={`absolute left-1/2 ${
+            isMobile ? "top-[max(50%,334px)]" : "top-[max(50%,522px)]"
+          }`}
+        >
           {ring2.map((p, i) => (
             <div
               key={i}

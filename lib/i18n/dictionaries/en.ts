@@ -64,7 +64,7 @@ export const en = {
     startProject: "Start a Project",
     emailMe: "Email me",
     viewWork: "View my work",
-    meta: ["Based in Indonesia", "5+ years experience", "40+ projects shipped"],
+    meta: ["Based in Indonesia", "3+ years experience", "20+ projects shipped"],
     marquee: [
       "WEBSITES",
       "WEB APPS",
@@ -236,20 +236,20 @@ export const en = {
       },
       {
         name: "Seculture",
-        type: "CULTURAL PLATFORM",
+        type: "COMPANY PROFILE",
         stack: "REACT · NEXT.JS · TAILWIND",
         status: "completed",
         year: "2024",
-        tagline: "Culture, presented with clarity.",
+        tagline: "An event company, presented properly.",
         problem:
-          "A cultural organization needed a digital home to share their mission, programs, and stories with a wider audience.",
+          "An event equipment rental and event organizer company needed a professional web presence that shows clients what they do — and earns trust before the first call.",
         outcome:
-          "A content-rich website that presents cultural initiatives professionally and makes information easy to discover.",
+          "A clean company profile website that presents their services and equipment clearly, so potential clients understand the offering and reach out with confidence.",
         role: "FRONT-END DEVELOPMENT",
         description: [
-          "Seculture brings cultural programs and stories to the web with a layout designed for readability and visual impact.",
-          "Visitors can explore initiatives, learn about the organization's mission, and stay connected to upcoming activities.",
-          "Clean typography and responsive design ensure the content shines on any screen size.",
+          "Seculture is an event equipment rental and event organizer company, and its website is a company profile built to sell before a human even gets involved.",
+          "The site presents their services — corporate events, weddings, concerts, and more — in a clear, trustworthy layout that makes the company easy to find and easy to contact.",
+          "Clean typography and responsive design keep the profile professional on any device, reflecting the quality of the events themselves.",
         ],
         href: "https://seculture.id/",
         screenImage: "/projects/Seculture.jpeg",
