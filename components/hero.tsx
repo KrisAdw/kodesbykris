@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowDown, Mail, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import gsap from "gsap";
@@ -28,10 +28,63 @@ function orbitPoint(radius: number, angleDeg: number) {
   };
 }
 
+/** Two counter-rotating rings of floating quotes. Rendered inside the
+ *  mascot's container so the field orbits around the mascot (right side on
+ *  desktop, centered on mobile) instead of floating over the hero copy.
+ *  `className` positions the ring centers relative to that container. */
+function OrbitRings({
+  ring1,
+  ring2,
+  className,
+}: {
+  ring1: OrbitParticle[];
+  ring2: OrbitParticle[];
+  className: string;
+}) {
+  return (
+    <>
+      <div data-orbit="1" className={className}>
+        {ring1.map((p, i) => (
+          <div
+            key={i}
+            className="absolute"
+            style={{ left: p.x, top: p.y, transform: "translate(-50%, -50%)" }}
+          >
+            <span
+              data-counter
+              className={`block whitespace-nowrap font-mono text-xs tracking-wider uppercase ${
+                p.accent
+                  ? "text-lime/70"
+                  : "text-neutral-500/45 dark:text-neutral-400/40"
+              }`}
+            >
+              {p.text}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div data-orbit="2" className={className}>
+        {ring2.map((p, i) => (
+          <div
+            key={i}
+            className="absolute"
+            style={{ left: p.x, top: p.y, transform: "translate(-50%, -50%)" }}
+          >
+            <span
+              data-counter
+              className="block whitespace-nowrap font-mono text-xs tracking-wider text-neutral-500/35 uppercase dark:text-neutral-400/30"
+            >
+              {p.text}
+            </span>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export function Hero({ t }: { t: Messages }) {
   const quotes = t.hero.quotes;
-  const ring1Ref = useRef<HTMLDivElement>(null);
-  const ring2Ref = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -42,9 +95,13 @@ export function Hero({ t }: { t: Messages }) {
     return () => mq.removeEventListener("change", sync);
   }, []);
 
-  // Smaller orbits on mobile so particles stay on-screen.
-  const RING_1_RADIUS = isMobile ? 180 : 300;
-  const RING_2_RADIUS = isMobile ? 250 : 430;
+  // Ring radii hug the mascot. Desktop outer ring clears the fixed navbar
+  // (72px + 20px clearance + 280px radius → center floor of 260px inside the
+  // mascot block, whose top sits at the hero's pt-28) and the headline copy;
+  // mobile keeps a slightly tighter field around the mascot, which sits
+  // between the title and the subtitle.
+  const RING_1_RADIUS = isMobile ? 180 : 190;
+  const RING_2_RADIUS = isMobile ? 250 : 280;
 
   const ring1 = useMemo<OrbitParticle[]>(
     () =>
@@ -79,36 +136,39 @@ export function Hero({ t }: { t: Messages }) {
         ease: "power3.out",
         stagger: 0.12,
         delay: 0.15,
+        // Remove the leftover inline transform so the mobile mascot block
+        // doesn't keep a stacking context (its orbit field relies on -z-10
+        // to stay behind the copy). The desktop mascot's translate-x-[30%]
+        // comes from its class, so it re-applies automatically.
+        clearProps: "transform",
       }
     );
 
-    // Fade the orbiting quote field in behind everything.
-    const field = [ring1Ref.current, ring2Ref.current].filter(
-      (el): el is HTMLDivElement => Boolean(el)
-    );
-    if (field.length) {
-      gsap.fromTo(field, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.4, delay: 0.4 });
+    // Fade the orbiting quote fields in behind everything.
+    const fields = gsap.utils.toArray<HTMLElement>("[data-orbit]");
+    if (fields.length) {
+      gsap.fromTo(fields, { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.4, delay: 0.4 });
     }
 
     // Orbit: rotate each ring, counter-rotate the text so it stays readable.
-    if (ring1Ref.current) {
-      gsap.to(ring1Ref.current, { rotation: 360, duration: 90, repeat: -1, ease: "none" });
-      gsap.to(ring1Ref.current.querySelectorAll("[data-counter]"), {
+    gsap.utils.toArray<HTMLElement>('[data-orbit="1"]').forEach((el) => {
+      gsap.to(el, { rotation: 360, duration: 90, repeat: -1, ease: "none" });
+      gsap.to(el.querySelectorAll("[data-counter]"), {
         rotation: -360,
         duration: 90,
         repeat: -1,
         ease: "none",
       });
-    }
-    if (ring2Ref.current) {
-      gsap.to(ring2Ref.current, { rotation: -360, duration: 140, repeat: -1, ease: "none" });
-      gsap.to(ring2Ref.current.querySelectorAll("[data-counter]"), {
+    });
+    gsap.utils.toArray<HTMLElement>('[data-orbit="2"]').forEach((el) => {
+      gsap.to(el, { rotation: -360, duration: 140, repeat: -1, ease: "none" });
+      gsap.to(el.querySelectorAll("[data-counter]"), {
         rotation: 360,
         duration: 140,
         repeat: -1,
         ease: "none",
       });
-    }
+    });
   });
 
   return (
@@ -119,63 +179,11 @@ export function Hero({ t }: { t: Messages }) {
       {/* Engineering grid base */}
       <div className="bg-grid absolute inset-0 opacity-70" aria-hidden />
 
-      {/* Orbiting quote particles — the problems kodesbykris solves */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        {/* Ring centers are clamped below the fixed navbar so the orbiting
-            text never floats behind it: navbar height + clearance + outer
-            ring radius (mobile 64+20+250=334px, desktop 72+20+430=522px). */}
-        <div
-          ref={ring1Ref}
-          className={`absolute left-1/2 ${
-            isMobile ? "top-[max(50%,334px)]" : "top-[max(50%,522px)]"
-          }`}
-        >
-          {ring1.map((p, i) => (
-            <div
-              key={i}
-              className="absolute"
-              style={{ left: p.x, top: p.y, transform: "translate(-50%, -50%)" }}
-            >
-              <span
-                data-counter
-                className={`block whitespace-nowrap font-mono text-xs tracking-wider uppercase ${
-                  p.accent
-                    ? "text-lime/70"
-                    : "text-neutral-500/45 dark:text-neutral-400/40"
-                }`}
-              >
-                {p.text}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        <div
-          ref={ring2Ref}
-          className={`absolute left-1/2 ${
-            isMobile ? "top-[max(50%,334px)]" : "top-[max(50%,522px)]"
-          }`}
-        >
-          {ring2.map((p, i) => (
-            <div
-              key={i}
-              className="absolute"
-              style={{ left: p.x, top: p.y, transform: "translate(-50%, -50%)" }}
-            >
-              <span
-                data-counter
-                className="block whitespace-nowrap font-mono text-xs tracking-wider text-neutral-500/35 uppercase dark:text-neutral-400/30"
-              >
-                {p.text}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-6 pt-28 pb-16 md:px-8">
         <div className="lg:relative lg:flex lg:items-stretch lg:justify-between lg:gap-10">
-          <div className="max-w-3xl shrink-0">
+          {/* z-10 keeps the headline, subtitle, and CTAs above the orbiting
+              quote field (which lives inside the mascot blocks below). */}
+          <div className="relative z-10 max-w-3xl shrink-0">
             <p
               data-hero
               className="font-mono text-xs tracking-[0.25em] text-neutral-500 uppercase"
@@ -192,12 +200,18 @@ export function Hero({ t }: { t: Messages }) {
               {t.hero.title.post}
             </h1>
 
-            {/* Mascot — mobile: between title and subtitle */}
+            {/* Mascot — mobile: between title and subtitle, with the orbit
+                field centered on it (-z-10 keeps the quotes behind the copy) */}
             <div
               data-hero
-              className="mt-6 flex justify-center lg:hidden"
+              className="relative mt-6 flex justify-center lg:hidden"
               aria-hidden
             >
+              <OrbitRings
+                ring1={ring1}
+                ring2={ring2}
+                className="pointer-events-none absolute -z-10 top-1/2 left-1/2"
+              />
               <Image
                 src="/maskot/maskot-kris.png"
                 alt=""
@@ -245,12 +259,23 @@ export function Hero({ t }: { t: Messages }) {
           {/* Mascot — desktop: absolutely positioned so it fills the
               headline–CTA block's height. Keeping it in flow made the row
               (and the gap above the meta bar) as tall as the mascot's
-              intrinsic size whenever the mascot was taller than the text. */}
+              intrinsic size whenever the mascot was taller than the text.
+
+              The orbit field lives inside this block: the ring centers sit
+              at left-4/5 (the character's center after the +30% translate)
+              so the quotes circle the mascot on the right side of the hero,
+              clear of the headline copy. The top floor (260px) keeps the
+              outer ring below the fixed navbar. */}
           <div
             data-hero
             className="hidden items-end justify-end lg:absolute lg:inset-y-0 lg:right-0 lg:translate-x-[30%] lg:flex"
             aria-hidden
           >
+            <OrbitRings
+              ring1={ring1}
+              ring2={ring2}
+              className="pointer-events-none absolute top-[max(50%,260px)] left-4/5"
+            />
             <Image
               src="/maskot/maskot-kris.png"
               alt=""
